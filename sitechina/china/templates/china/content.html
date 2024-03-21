@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>{{title}}</h1>
+<ul>
+    {% for p in posts %}
+    {% if p.id == post%}
+    <li>
+
+
+        <h2>{{p.title}}</h2>
+        <p>{{p.content}}</p>
+
+        {% if not forloop.last %}
+        <hr>
+        {% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endblock %}

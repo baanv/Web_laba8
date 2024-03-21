@@ -1,0 +1,41 @@
+html, body {
+	font-family: 'Arial';
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	background-image: url("../images/back.jpg");
+    background-size: cover;
+}
+nav{
+	color: #0059b2;
+    background-color: #0d191d33;
+    display: flex;
+    justify-content: space-around;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding: 5px 10px 5px 10px;
+}
+h1{
+	display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-end;
+	font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+b{
+    font-family: 'Arial';
+    color: #000000;
+    font-size: 20px;
+}
+tt{
+    font-family: 'Arial';
+    color: #000000;
+    font-size: 20px;
+}
+

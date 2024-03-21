@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% load china_tags %} {% block content %}
+<h1>{{title}}</h1>
+
+{% if cat_selected == 0 or cat_selected is None %}
+Все категории
+{% else %}
+Все категории
+{% endif %}
+
+{% show_categories cat_selected %}
+
+{% endblock %}
