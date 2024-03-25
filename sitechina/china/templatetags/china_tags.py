@@ -1,5 +1,6 @@
 from django import template
 import china.views as views
+from china.models import China
 
 register = template.Library()
 

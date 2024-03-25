@@ -6,6 +6,7 @@ html, body {
 	background-image: url("../images/back.jpg");
     background-size: cover;
 }
+
 nav{
 	color: #0059b2;
     background-color: #0d191d33;
@@ -38,4 +39,3 @@ tt{
     color: #000000;
     font-size: 20px;
 }
-

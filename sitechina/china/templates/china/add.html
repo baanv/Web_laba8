@@ -1,3 +1,13 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+{% block content %}
 <h1>{{title}}</h1>
+<h3>{{message}}</h3>
+<form method="post" action="{% url 'process_add' %}">
+    {% csrf_token %}
+    <input type="text" name="title_p" placeholder="Заголовок">
+    <input type="text" name="content_p" placeholder="Текст">
+    <input type="text" name="annotation_p" placeholder="Аннотация">
+    <button type="submit">Добавить</button>
+</form>
+
 {% endblock %}
