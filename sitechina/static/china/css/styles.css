@@ -7,23 +7,14 @@ html, body {
     background-size: cover;
 }
 
-nav{
-	color: #0059b2;
-    background-color: #0d191d33;
-    display: flex;
-    justify-content: space-around;
-    align-content: flex-end;
-    flex-wrap: wrap;
-    flex-direction: row;
-    padding: 5px 10px 5px 10px;
-}
+
 h1{
 	display: flex;
     justify-content: center;
     flex-wrap: wrap;
     align-content: flex-end;
 	font-size: 2em;
-    margin-block-start: 0.67em;
+    margin-block-start: 1.67em;
     margin-block-end: 0.67em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
@@ -38,4 +29,106 @@ tt{
     font-family: 'Arial';
     color: #000000;
     font-size: 20px;
+}
+nav {
+	position: fixed;
+
+    color: #0059b2;
+    background-color: #607d8b;
+
+    top: 0;
+    padding: 10px;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+}
+
+nav a {
+    color: #ffffff;
+}
+
+nav a:hover {
+	color: #000000;
+	border-bottom: none;
+}
+
+nav div {
+	display: flex;
+    justify-content: space-evenly;
+	font-weight: bold;
+    font-variant: all-small-caps;
+	font-size: large;
+}
+
+.left-menu {
+    float: left;
+    width: 100px;
+	position: fixed;
+	left: 0;
+	top: 0;
+	background-color: #90a4ae;
+	height: 100%;
+	width: 170px;
+	padding-left: 20px;
+	padding-top: 80px;
+}
+/* Стили для списка категорий */
+.left-menu ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    font-variant: common-ligatures;
+    font-size: smaller;
+    font-weight: bold;
+    list-style: cjk-ideographic;
+}
+
+.left-menu ul li {
+        margin-bottom: 10px;
+    margin-left: 15px;
+    color: #131312;
+
+
+}
+/* Стили для основного контента */
+.main-content {
+
+    margin-left: 220px; /* Ширина левого меню + отступ */
+}
+stat{
+    outline-style: auto;
+}
+.img-article-left {
+    display: flex;
+    float: left; /* Выравнивание изображения слева */
+
+    margin-top: 140px; /* Отступ сверху от текста */
+    width: 50%; /* Изменение ширины изображения на 50% */
+    height: auto; /* Автоматическое подстраивание высоты */
+}
+.image-with-text {
+    display: flex; /* Использование flexbox для выравнивания элементов */
+    width: 50%; /* Изменение ширины изображения на 50% */
+    height: auto; /* Автоматическое подстраивание высоты */
+    flex-direction: column; /* Расположить элементы в столбец */
+}
+
+.image-with-text img {
+    float: left; /* Обтекание изображения слева */
+    margin-right: 10px; /* Отступ справа от изображения */
+}
+
+.image-with-text p {
+    margin-top: 0; /* Убрать отступ сверху у текста */
+}
+tg{
+    list-style-type: none;
+    display: ruby;
 }

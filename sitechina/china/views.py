@@ -1,7 +1,8 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 
-from china.models import China
+from china.forms import CategoryForm
+from china.models import China, Category, TagPost
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Добавить статью", 'url_name':
@@ -18,13 +19,16 @@ cats_db = [
     {'id': 4, 'name': 'Личности'},
 ]
 
+
 # Create your views here.
+
 def index(request):
     posts = China.published.all()
     data = {
         'title': 'Главная страница',
         'menu': menu,
         'posts': posts,
+        'cat_selected': 0,
     }
     return render(request, 'china/index.html',
                   context=data)
@@ -78,6 +82,7 @@ def show_post(request, post_slug):
         'menu': menu,
         'post': post,
         'cat_selected': 1,
+        'image':post.image,
 
     }
     return render(request, 'China/post.html',
@@ -105,8 +110,16 @@ def show_post(request, post_slug):
 
 
 def addpage(request):
-    return render(request, 'china/add.html',
-                  {'title': 'Добавить свою статью', 'menu': menu})
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            selected_categories = form.cleaned_data['Категории']
+        return render(request, 'china/add.html',
+                      {'title': 'Добавить свою статью', 'menu': menu, 'form': form})
+    else:
+        form = CategoryForm()
+        return render(request, 'china/add.html',
+                      {'title': 'Добавить свою статью', 'menu': menu, 'form': form})
 
 
 def process_add(request):
@@ -114,13 +127,23 @@ def process_add(request):
         title_p = request.POST.get('title_p')
         content_p = request.POST.get('content_p')
         annotation_p = request.POST.get('annotation_p')
+        slug_p = request.POST.get('slug_p')
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            selected_categories = form.cleaned_data['categories']
+
+            w = China.objects.create(title=f'{title_p}', content=f'{content_p}', cat_id=int(selected_categories[0]),
+                                     annotation=f'{annotation_p}',
+                                     slug=f'{slug_p}')
+            China.objects.filter(pk__lte=1).update(is_published=1)
 
         return render(request, 'china/add.html',
-                     {'title': 'Добавить свою статью', 'message': 'Статья добавлена', 'menu': menu})
+                      {'title': 'Добавить свою статью', 'message': 'Статья добавлена', 'menu': menu, 'form': form})
 
     else:
+        form = CategoryForm()
         return render(request, 'china/add.html',
-                      {'title': 'Добавить свою статью', 'menu': menu})
+                      {'title': 'Добавить свою статью', 'menu': menu, 'form': form})
 
 
 def contact(request):
@@ -133,12 +156,26 @@ def login(request):
                   {'title': 'Вход', 'menu': menu})
 
 
-def show_category(request, cat_id):
+def show_category(request, cat_slug):
+    category = get_object_or_404(Category, slug=cat_slug)
+    posts = China.published.filter(cat_id=category.pk)
     data = {
-        'title': 'Отображение по рубрикам',
+        'title': f'Рубрика: {category.name}',
         'menu': menu,
-        'posts': China.objects.filter(cat_id=cat_id),
-        'cat_selected': cat_id,
+        'posts': posts,
+        'cat_selected': category.pk,
     }
-    return render(request, 'china/cats.html',
+    return render(request, 'china/index.html',
                   context=data)
+
+
+def show_tag_postlist(request, tag_slug):
+    tag = get_object_or_404(TagPost, slug=tag_slug)
+    posts = tag.tags.filter(is_published=China.Status.PUBLISHED)
+    data = {
+    'title': f'Тег: {tag.tag}',
+    'menu': menu,
+    'posts': posts,
+    'cat_selected': None,
+    }
+    return render(request, 'china/index.html', context=data)

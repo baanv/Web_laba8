@@ -4,15 +4,36 @@
 {% autoescape off %}
 <html>
 <head>
-    <title>{{title}}</title>
-    <link type="text/css" href="{% static 'china/css/styles.css' %}" rel="stylesheet" />
+
+    <link type="text/css" href="{% static 'china/css/styles.css' %}" rel="stylesheet"/>
 </head>
 <body>
 
 {% include 'includes/nav.html' %}
+<div class="left-menu">
+<!-- Sidebar слева -->
+<td valign="top" class="left-chapters">
+    <ul id="leftchapters">
+        {% if cat_selected == 0 or cat_selected is None %}
+        <li class="selected">Все
+            категории
+        </li>
+        {% else %}
+        <li><a href="{% url 'home' %}">Все
+            категории</a></li>
+        {% endif %}
+        {% show_categories cat_selected %}
+
+        <li>{% show_all_tags %}</li>
+    </ul>
+</td>
+<!-- Конец Sidebar'а -->
+</div>
+<div class = "main-content">
+     <title>{{title}}</title>
 {{p.content|linebreaks|truncatewords:50}}
 {% block content %} {% endblock %}
-
+</div>
 {% endautoescape %}
 </body>
 </html>

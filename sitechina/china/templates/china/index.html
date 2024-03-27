@@ -4,13 +4,22 @@
 <ul class="list-articles">
     {% for p in posts %}
     {% if p.is_published %}
-    <li><h2>{{p.title}}</h2>
+
+
+<h2>{{p.title}}</h2>
+
+         <li><div class="article-panel">
+
+ <p class="first">Категория: {{p.cat}}</p>
+ <p class="last">Дата: {{p.time_update|date:"dm-Y H:i:s"}}</p>
+</div>
         {% autoescape off %}
         {{p.annotation|linebreaks|truncatewords:50}}
         {% endautoescape %}
         <div class="clear"></div>
         <p class="link-readpost"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
     </li>
+
     {% endif %}
     {% endfor %}
 </ul>
