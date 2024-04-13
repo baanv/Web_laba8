@@ -1,0 +1,56 @@
+html, body {
+	font-family: 'Arial';
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	background-image: url("../china/images/back.jpg");
+    background-size: cover;
+}
+#header {
+    background: #5d7b7b3d;
+}
+#branding h1 a:link, #branding h1 a:visited {
+    color: #43605f;
+}
+.module caption, .inline-group h2 {
+     background: #5d7b7b3d;
+    color: #43605f;
+}
+a.section:link, a.section:visited {
+    color: #43605f;
+}
+#user-tools {
+    color: #43605f;
+}
+h1{
+    color: #000000;
+}
+#content-related {
+    background: var(--darkened-bg);
+    margin-right: -883px;
+    background: left;
+    margin-top: -68px;
+}
+div.breadcrumbs {
+    background: #3f6a68b5;
+    padding: 10px 40px;
+    border: none;
+    color: #bbd9d8;
+    text-align: left;
+}
+.section:visited {
+    color: #fff;
+    font-weight: bold;
+}
+a.section:link, a.section:visited {
+    color: #ffffff;
+}
+.module h2, .module caption, .inline-group h2 {
+    margin: 0;
+    padding: 8px;
+    font-weight: 400;
+    font-size: 0.8125rem;
+    text-align: left;
+    background: #6b8c8b;
+    color: var(--header-link-color);
+}
