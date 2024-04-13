@@ -23,6 +23,8 @@ handler404 = views.page_not_found
 
 # from django.views.defaults import page_not_found
 handler404 = views.page_not_found
+admin.site.site_header = "Панель администрирования"
+admin.site.index_title = "Информационный сайт о Китае"
 # register_converter(converters.FourDigitYearConverter, "year4")
 urlpatterns = [
       path('admin/', admin.site.urls),
