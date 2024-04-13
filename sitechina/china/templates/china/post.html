@@ -4,9 +4,10 @@
 <h1>{{title}}</h1>
 
 {{post.content|linebreaks}}
-{% if post.image %}
-<img class="image-with-text" src="{{ STATIC_URL }}china/images/{{ post.image }}">
+{% if post.photo %}
+<img class="img-article-left" src="{{ photo.url}}">
 {% endif %}
+
 <!-- Теги -->
 {% with post.tags.all as tags %}
 {% if tags %}
