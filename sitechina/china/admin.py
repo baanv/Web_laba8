@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
+
 from .models import China, Category
 class TranslateFilter(admin.SimpleListFilter):
     title = 'Наличие перевода'
@@ -17,10 +19,12 @@ class TranslateFilter(admin.SimpleListFilter):
 @admin.register(China)
 class ChinaAdmin(admin.ModelAdmin):
     #exclude = ['tags', 'is_published']
-    fields = ['title', 'slug', 'content', 'cat', 'photo', 'translate', 'tags']
+    fields = ['title', 'content','annotation', 'slug', 'cat', 'tags', 'photo']
+    list_display = ('title', 'post_photo', 'annotation',
+                    'is_published', 'cat')
     readonly_fields = ['slug']
     filter_horizontal = ['tags']
-    list_display = ('title', 'time_create', 'is_published', 'cat', 'brief_info', 'brief_content')
+   # list_display = ('title', 'time_create', 'is_published', 'cat', 'brief_info', 'brief_content')
     list_display_links = ('title',)
     list_editable = ('is_published', 'cat',)
     ordering = ['-time_create', 'title']
@@ -28,10 +32,14 @@ class ChinaAdmin(admin.ModelAdmin):
     search_fields = ['title', 'cat__name']
     list_filter = [TranslateFilter, 'cat__name', 'is_published']
     # list_per_page = 5
+    save_on_top = True
 
-    @admin.display(description="Краткое описание")
-    def brief_info(self, china: China):
-        return f"Описание {len(china.content)} символов."
+    @admin.display(description="Изображение")
+    def post_photo(self, china: China):
+        if china.photo:
+            return mark_safe(f"<img src='{china.photo.url}'width=50>")
+        return "Без фото"
+
 
     @admin.display(description="Краткое содержание")
     def brief_content(self, china: China):

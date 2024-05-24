@@ -11,7 +11,7 @@ urlpatterns = [
     path('dict/', views.dictionary, name='dict'),
     path('find/', views.find_information, name='find'),
     path('about/', views.about, name='about'),
-    path('add/', views.addpage, name='add_page'),
+    path('add/', views.AddPage.as_view(), name='add_page'),
     path('contact/', views.contact, name='contact'),
     path('login/', views.login, name='login'),
     path('post/<slug:post_slug>/', views.show_post,
@@ -22,5 +22,5 @@ urlpatterns = [
     path('tag/<slug:tag_slug>/',
          views.show_tag_postlist, name='tag'),
 
-    path('process_add/', views.process_add, name='process_add'),
+   # path('process_add/', views.process_add, name='process_add'),
 ]

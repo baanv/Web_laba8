@@ -4,24 +4,13 @@ from django.urls import reverse
 from transliterate import translit
 
 
+class UploadFiles(models.Model):
+    file = models.FileField(upload_to='uploads_model')
+
 
 class PublishedModel(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=China.Status.PUBLISHED)
-
-
-"""def translit(s: str) -> str:
-    d = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д':
-        'd',
-         'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и':
-             'i', 'к': 'k',
-         'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п':
-             'p', 'р': 'r',
-         'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х':
-             'h', 'ц': 'c', 'ч': 'ch',
-         'ш': 'sh', 'щ': 'shch', 'ь': '', 'ы': 'y',
-         'ъ': '', 'э': 'r', 'ю': 'yu', 'я': 'ya'}
-    return "".join(map(lambda x: d[x] if d.get(x, False) else x, s.lower()))"""
 
 
 class China(models.Model):
@@ -30,16 +19,17 @@ class China(models.Model):
         PUBLISHED = 1, 'Опубликовано'
 
     title = models.CharField(max_length=255, verbose_name="Заголовок")
-    slug = models.SlugField(max_length=255, db_index=True, unique=True)
+    slug = models.SlugField(max_length=255, db_index=True, unique=True, verbose_name="URL")
     content = models.TextField(blank=True, verbose_name="Текст статьи")
-    annotation = models.TextField(blank=True, verbose_name="Аннотация статьи")
+    annotation = models.TextField(blank=True, verbose_name="Аннотация статьи",  null=True)
     models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
 
     # cat_id = models.IntegerField(default=1, null=True)
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='posts', verbose_name="Категории")
     # cat = models.ForeignKey('Category', on_delete=models.CASCADE)
+
     tags = models.ManyToManyField('TagPost', blank=True, related_name='tags', verbose_name="Тэги")
-    photo = models.ImageField(upload_to="photo/%Y/%m/%d/", verbose_name="Фото", null=True)
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", default=None, blank=True, null=True, verbose_name="Фото")
 
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
@@ -48,7 +38,7 @@ class China(models.Model):
                                        default=Status.DRAFT, verbose_name="Статус")
     objects = models.Manager()
     published = PublishedModel()
-    image = models.ImageField(upload_to='photos/', null=True)
+    #image = models.ImageField(upload_to='photos/', null=True)
     translate = models.OneToOneField('Translate', on_delete=models.SET_NULL, null=True, blank=True,
                                      related_name='title_in_rus', verbose_name="Перевод")
 
@@ -61,7 +51,7 @@ class China(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(translit(self.title, 'ru', reversed=True))
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug':
@@ -69,7 +59,6 @@ class China(models.Model):
 
     def __str__(self):
         return self.title
-
 
 
 class Category(models.Model):

@@ -1,8 +1,12 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
+import uuid
 
-from china.forms import CategoryForm
-from china.models import China, Category, TagPost
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+from china.forms import AddPostForm, UploadFileForm
+from china.models import China, Category, TagPost, UploadFiles
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Добавить статью", 'url_name':
@@ -17,6 +21,7 @@ cats_db = [
     {'id': 2, 'name': 'Города'},
     {'id': 3, 'name': 'Провинции'},
     {'id': 4, 'name': 'Личности'},
+    {'id': 5, 'name': 'Праздники'},
 ]
 
 
@@ -34,9 +39,30 @@ def index(request):
                   context=data)
 
 
+def handle_uploaded_file(f):
+    name = f.name
+    ext = ''
+    if '.' in name:
+        ext = name[name.rindex('.'):]
+        name = name[:name.rindex('.')]
+    suffix = str(uuid.uuid4())
+    with open(f"uploads/{name}_{suffix}{ext}", "wb+") as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
 def about(request):
+    if request.method == "POST":
+        form = UploadFileForm(request.POST,
+                              request.FILES)
+        if form.is_valid():
+            fp = UploadFiles(file=form.cleaned_data['file'])
+            fp.save()
+
+    else:
+        form = UploadFileForm()
     return render(request, 'china/about.html',
-                  {'title': 'О сайте', 'menu': menu})
+              {'title': 'О сайте', 'menu': menu, 'form': form})
 
 
 def categories(request, cat_id):
@@ -82,7 +108,6 @@ def show_post(request, post_slug):
         'menu': menu,
         'post': post,
         'cat_selected': 1,
-        'image':post.image,
 
     }
     return render(request, 'China/post.html',
@@ -105,10 +130,9 @@ def show_post(request, post_slug):
     else:
         return HttpResponse("Статья не найдена.")'''
 
-
 # return HttpResponse(f"Отображение статьи с id = {post_id} ")
 
-
+'''
 def addpage(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -120,8 +144,50 @@ def addpage(request):
         form = CategoryForm()
         return render(request, 'china/add.html',
                       {'title': 'Добавить свою статью', 'menu': menu, 'form': form})
+'''
 
 
+#
+# def addpage(request):
+#     if request.method == 'POST':
+#         form = AddPostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#
+#             title = request.POST.get('title')
+#             slug = request.POST.get('slug')
+#             content = request.POST.get('content')
+#             cat_id = request.POST.get('category_id')
+#
+#            # Получите объект категории (category_instance) по cat_id
+#
+#             china_obj = China(title=title, slug=slug, content=content, cat=cat_id,
+#                       is_published=China.Status.PUBLISHED)
+#             china_obj.save()
+#
+#     # print(form.cleaned_data)
+#             tag = request.POST.get('tags')
+#             china_obj.tags.add(tag)
+#             china_obj.save()
+#             return redirect('home')
+#
+#     else:
+#         form = AddPostForm()
+#     return render(request, 'china/addpage.html',
+#               {'menu': menu, 'title': 'Добавление статьи', 'form':
+#                   form})
+
+
+class AddPage(CreateView):
+    form_class = AddPostForm
+    template_name = 'china/addpage.html'
+    success_url = reverse_lazy('home')
+    extra_context = {
+        'menu': menu,
+        'title': 'Добавление статьи',
+    }
+
+
+"""
 def process_add(request):
     if request.method == 'POST':
         title_p = request.POST.get('title_p')
@@ -144,6 +210,7 @@ def process_add(request):
         form = CategoryForm()
         return render(request, 'china/add.html',
                       {'title': 'Добавить свою статью', 'menu': menu, 'form': form})
+"""
 
 
 def contact(request):
@@ -173,9 +240,9 @@ def show_tag_postlist(request, tag_slug):
     tag = get_object_or_404(TagPost, slug=tag_slug)
     posts = tag.tags.filter(is_published=China.Status.PUBLISHED)
     data = {
-    'title': f'Тег: {tag.tag}',
-    'menu': menu,
-    'posts': posts,
-    'cat_selected': None,
+        'title': f'Тег: {tag.tag}',
+        'menu': menu,
+        'posts': posts,
+        'cat_selected': None,
     }
     return render(request, 'china/index.html', context=data)
