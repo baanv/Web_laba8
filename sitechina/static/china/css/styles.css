@@ -175,3 +175,54 @@ img {
     padding: 2%;
     height: auto;
 }
+
+
+/* Стили для навигации */
+nav.list-pages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    background-color: #607d8b;
+    position: fixed;
+    top: 635px;
+    bottom: 0px;
+    width: 100%
+
+}
+
+nav.list-pages ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0 10px;
+    align-items: center; /* Центрирование элементов по вертикали внутри ul */
+}
+
+nav.list-pages li {
+    margin: 0 5px;
+}
+
+nav.list-pages li a, nav.list-pages .page-num-selected {
+    text-decoration: none;
+    color: #a3acb4;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    display: inline-block; /* Обеспечение одинакового отображения для ссылок и выделенного элемента */
+}
+
+nav.list-pages li a:hover {
+    background-color: #a3acb0;
+    color: #ffffff;
+}
+
+nav.list-pages .page-num-selected {
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #a3acb4;
+}
+
+nav.list-pages .page-num {
+    list-style: none;
+}
