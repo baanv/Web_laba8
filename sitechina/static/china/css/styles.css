@@ -1,3 +1,4 @@
+
 html, body {
 	font-family: 'Arial';
 	padding: 0;
@@ -90,12 +91,15 @@ nav div {
     list-style: cjk-ideographic;
 }
 
-.left-menu ul li {
+.left-menu ul li  {
         margin-bottom: 10px;
     margin-left: 15px;
-    color: #131312;
-
-
+   color: white;
+   text-decoration: none;
+}
+.left-menu a  {
+color: #ffffff;
+text-decoration: none;
 }
 /* Стили для основного контента */
 .main-content {
@@ -175,7 +179,26 @@ img {
     padding: 2%;
     height: auto;
 }
+/*Стили для тегов*/
+ul.tags-list {
+    width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
 
+ul.tags-list li {
+	margin: 0;
+	padding: 0 0 10px;
+    display: inline-block;
+}
+
+ul.tags-list li a {
+	padding: 5px;
+	font-size: 10px;
+	border: 1px solid #607d8b;
+	color: white;
+}
 
 /* Стили для навигации */
 nav.list-pages {
