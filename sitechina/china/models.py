@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
@@ -23,7 +24,8 @@ class China(models.Model):
     content = models.TextField(blank=True, verbose_name="Текст статьи")
     annotation = models.TextField(blank=True, verbose_name="Аннотация статьи",  null=True)
     models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
-
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='posts',
+                               null=True, default=None)
     # cat_id = models.IntegerField(default=1, null=True)
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='posts', verbose_name="Категории")
     # cat = models.ForeignKey('Category', on_delete=models.CASCADE)
@@ -103,3 +105,4 @@ class Translate(models.Model):
 
     def __str__(self):
         return self.name
+

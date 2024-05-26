@@ -3,6 +3,7 @@ from django.db.models import Count
 
 import china.views as views
 from china.models import Category, TagPost
+from china.utils import menu
 
 register = template.Library()
 
@@ -10,6 +11,11 @@ register = template.Library()
 @register.simple_tag()
 def get_categories():
     return views.cats_db
+
+
+@register.simple_tag
+def get_menu():
+    return menu
 
 
 @register.inclusion_tag('china/list_categories.html')

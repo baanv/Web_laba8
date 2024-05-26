@@ -25,7 +25,30 @@ SECRET_KEY = 'django-insecure-%x#_om)4fqmw+_v6vwx-0fcz6!s*o+-82=@q+g5c(60p^v&9h$
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'users:login'
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "bviktoriak@yandex.ru"
+EMAIL_HOST_PASSWORD = "nozmvqriopaccpdh"
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'users.User'
+
+
+
+
+AUTHENTICATION_BACKENDS = [
+     'django.contrib.auth.backends.ModelBackend',
+     'users.authentication.EmailAuthBackend',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,7 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'china.apps.ChinaConfig',
-
+    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
@@ -67,6 +90,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.static',
+                'users.context_processors.get_china_context'
+
             ],
         },
     },
@@ -121,7 +146,10 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+DEFAULT_USER_IMAGE = MEDIA_URL + 'users/default.png'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

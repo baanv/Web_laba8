@@ -34,7 +34,7 @@ tt{
 nav {
 	position: fixed;
 
-    color: #0059b2;
+    color: #607d8b;
     background-color: #607d8b;
 
     top: 0;
@@ -90,6 +90,7 @@ nav div {
     font-weight: bold;
     list-style: cjk-ideographic;
 }
+
 
 .left-menu ul li  {
         margin-bottom: 10px;
@@ -249,3 +250,17 @@ nav.list-pages .page-num-selected {
 nav.list-pages .page-num {
     list-style: none;
 }
+/*Формы*/
+input {
+background: space;
+}
+textarea{
+background: space;
+}
+select{
+background: space;
+}
+button{
+color: #ffffff;
+    background-color: #607d8b;
+    }

@@ -1,7 +1,6 @@
 menu = [{'title': "Главная", 'url_name': 'home'},
-        {'title': "О сайте", 'url_name': 'add_page'},
-        {'title': "Добавить статью", 'url_name': 'add_page'},
-        {'title': "Войти", 'url_name': 'login'}
+        {'title': "О сайте", 'url_name': 'about'},
+        {'title': "Добавить статью", 'url_name': 'add_page'}
         ]
 
 
@@ -17,7 +16,7 @@ class DataMixin:
     def get_mixin_context(self, context, **kwargs):
         if self.title_page:
                context['title'] = self.title_page
-        context['menu'] = menu
+        #context['menu'] = menu
         context['cat_selected'] = None
         context.update(kwargs)
         return context

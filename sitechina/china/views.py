@@ -1,22 +1,23 @@
-from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponseNotFound
+from django.shortcuts import render, get_object_or_404
 import uuid
 
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, TemplateView, ListView, DetailView, FormView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
-from china.forms import AddPostForm, UploadFileForm
+from china.forms import UploadFileForm
 from china.models import China, Category, TagPost, UploadFiles
-from django.views import View
 
-from china.templatetags.utils import DataMixin
-
+from china.utils import DataMixin
+'''
 menu = [{'title': "О сайте", 'url_name': 'about'},
         {'title': "Добавить статью", 'url_name':
             'add_page'},
         {'title': "Обратная связь", 'url_name':
             'contact'},
-        {'title': "Войти", 'url_name': 'login'}
+
         ]
 
 cats_db = [
@@ -26,7 +27,7 @@ cats_db = [
     {'id': 4, 'name': 'Личности'},
     {'id': 5, 'name': 'Праздники'},
 ]
-
+'''
 # Create your views here.
 
 '''def index(request):
@@ -106,7 +107,8 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-
+@login_required
+@permission_required(perm='china.view_china',raise_exception=True)
 def about(request):
 
     if request.method == "POST":
@@ -119,7 +121,7 @@ def about(request):
     else:
         form = UploadFileForm()
     return render(request, 'china/about.html',
-                  {'title': 'О сайте', 'menu': menu, 'form': form})
+                  {'title': 'О сайте',  'form': form})
 
 
 def page_not_found(request, exception):
@@ -130,7 +132,7 @@ def find_information(request):
     posts = China.published.all()
     data = {
         'title': 'Поиск статьи',
-        'menu': menu,
+
         'posts': posts,
 
     }
@@ -189,22 +191,31 @@ class AddPage(FormView):
 '''
 
 
-class AddPage(DataMixin, CreateView):
+class AddPage(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, CreateView):
     model = China
-    fields = ['title', 'slug', 'content',
-              'is_published', 'cat']
+    fields = ['title', 'slug', 'content', 'annotation',
+              'is_published', 'cat', 'photo']
+
     # form_class = AddPostForm
     template_name = 'china/addpage.html'
     success_url = reverse_lazy('home')
     title_page = 'Добавление статьи'
+    permission_required = 'china.add_china'
+
+    def form_valid(self, form):
+        w = form.save(commit=False)
+        w.author = self.request.user
+        return super().form_valid(form)
 
 
-class UpdatePage(DataMixin, UpdateView):
+class UpdatePage(PermissionRequiredMixin, DataMixin, UpdateView):
+
     model = China
     fields = ['title', 'content', 'annotation', 'photo', 'is_published', 'cat']
     template_name = 'china/addpage.html'
     success_url = reverse_lazy('home')
     title_page = 'Редактирование статьи'
+    permission_required = 'china.change_china'
 class DeletePost(DataMixin, DeleteView):
     model = China
     template_name = 'china/delete.html'
@@ -217,10 +228,10 @@ class DeletePost(DataMixin, DeleteView):
                   {'title': 'Обратная связь', 'menu': menu})
 
 '''
-def login(request):
+'''def login(request):
     return render(request, 'china/login.html',
                   {'title': 'Вход', 'menu': menu})
-
+'''
 
 
 

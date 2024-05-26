@@ -31,6 +31,8 @@ admin.site.index_title = "Информационный сайт о Китае"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('china/', include('china.urls')),
+    path('users/', include('users.urls', namespace="users")),
+    path("__debug__/", include("debug_toolbar.urls")),
 
 ]
 if settings.DEBUG:
