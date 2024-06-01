@@ -4,10 +4,8 @@ from django.utils.text import slugify
 from django.urls import reverse
 from transliterate import translit
 
-
 class UploadFiles(models.Model):
     file = models.FileField(upload_to='uploads_model')
-
 
 class PublishedModel(models.Manager):
     def get_queryset(self):

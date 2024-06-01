@@ -14,8 +14,7 @@ class UploadFileForm(forms.Form):
 class AddPostForm(forms.ModelForm):
     class Meta:
         model = China
-        fields = ['title', 'slug', 'content', 'annotation', 'is_published',
-                  'cat', 'tags', 'photo']
+        fields = ['title', 'slug', 'content', 'annotation', 'is_published', 'cat', 'tags', 'photo']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
             'content': forms.Textarea(attrs={'cols': 60, 'rows': 10}),

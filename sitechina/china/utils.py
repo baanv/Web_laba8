@@ -1,5 +1,5 @@
 menu = [{'title': "Главная", 'url_name': 'home'},
-        {'title': "О сайте", 'url_name': 'about'},
+        {'title': "Обратная связь", 'url_name': 'about'},
         {'title': "Добавить статью", 'url_name': 'add_page'}
         ]
 

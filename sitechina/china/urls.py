@@ -1,9 +1,13 @@
+from django.contrib.auth.decorators import login_required
+from django.template.defaulttags import url
 from django.urls import path, register_converter
 
 from china import views, converters
+
 from china.views import ChinaCategory
 
 register_converter(converters.FourDigitYearConverter, "year4")
+
 urlpatterns = [
 
     #path('cats/<slug:cat_slug>/', views.categories_by_slug, name='cats'),
@@ -18,6 +22,8 @@ urlpatterns = [
     path('post/<slug:post_slug>/', views.ShowPost.as_view(), name='post'),
     path('edit/<slug:slug>/', views.UpdatePage.as_view(), name='edit_page'),
     path('delete/<slug:slug>/', views.DeletePost.as_view(), name='delete'),
+
+
 
     #path('add/', views.addpage, name='add_page'),
 

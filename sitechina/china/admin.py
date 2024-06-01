@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-
 from .models import China, Category
 class TranslateFilter(admin.SimpleListFilter):
     title = 'Наличие перевода'
@@ -60,6 +59,4 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links = ('id', 'name')
 
-# admin.site.register(China, ChinaAdmin)
-# Register your models here.
-# manage.py migrate
+

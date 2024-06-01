@@ -9,13 +9,13 @@
         <p><img src="{{p.photo.url}}"></p>
         {% endif %}
         <li><h2>{{p.title}}</h2>
-            <p class="first">Категория: {{p.cat.name}} | автор: {{p.author.username|default:"неизвестен"}}</p>
+            <p class="first">Категория: {{p.cat.name}} | Автор: {{p.author.username|default:"неизвестен | "}} Дата: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
 
             {% autoescape off %}
             {{p.annotation|linebreaks|truncatewords:50}}
             {% endautoescape %}
-            <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать
-                пост</a></p>
+            <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+
         </li>
         {% endfor %}
     </ul>

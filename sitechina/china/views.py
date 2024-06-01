@@ -1,13 +1,14 @@
+
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, get_object_or_404
 import uuid
 
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
-from china.forms import UploadFileForm
+from china.forms import UploadFileForm, AddPostForm
 from china.models import China, Category, TagPost, UploadFiles
 
 from china.utils import DataMixin
@@ -108,7 +109,7 @@ def handle_uploaded_file(f):
             destination.write(chunk)
 
 @login_required
-@permission_required(perm='china.view_china',raise_exception=True)
+#@permission_required(perm='china.view_china',raise_exception=True)
 def about(request):
 
     if request.method == "POST":
@@ -121,7 +122,7 @@ def about(request):
     else:
         form = UploadFileForm()
     return render(request, 'china/about.html',
-                  {'title': 'О сайте',  'form': form})
+                  {'title': 'Обратная связь',  'form': form})
 
 
 def page_not_found(request, exception):
@@ -192,11 +193,13 @@ class AddPage(FormView):
 
 
 class AddPage(LoginRequiredMixin, PermissionRequiredMixin, DataMixin, CreateView):
-    model = China
-    fields = ['title', 'slug', 'content', 'annotation',
-              'is_published', 'cat', 'photo']
+    #model = China
+    form_class = AddPostForm
+    #fields = ['title', 'slug', 'content', 'annotation',
+     #        'is_published', 'cat', 'tags', 'photo']
 
-    # form_class = AddPostForm
+
+    #form_class = AddPostForm
     template_name = 'china/addpage.html'
     success_url = reverse_lazy('home')
     title_page = 'Добавление статьи'
@@ -240,7 +243,7 @@ def show_category(request, cat_slug):
     posts = China.published.filter(cat_id=category.pk)
     data = {
         'title': f'Рубрика: {category.name}',
-        'menu': menu,
+       # 'menu': menu,
         'posts': posts,
         'cat_selected': category.pk,
     }
@@ -259,3 +262,4 @@ def show_category(request, cat_slug):
     }
     return render(request, 'china/index.html', context=data)
 '''
+
